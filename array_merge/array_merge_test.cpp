@@ -18,6 +18,7 @@ TEST(ArrayMerge, Handle_empty_list) {
 
   result = array_merge(0, sizes,  a);
   arrays_match(1, result, expected);
+  free(result);
 }
 
 TEST(ArrayMerge, Handle_singleton_list) {
@@ -30,6 +31,7 @@ TEST(ArrayMerge, Handle_singleton_list) {
 
   result = array_merge(num_arrays, sizes, a);
   arrays_match(2, result, expected);
+  free(result);
 }
 
 TEST(ArrayMerge, Handle_one_longer_list) {
@@ -42,6 +44,7 @@ TEST(ArrayMerge, Handle_one_longer_list) {
 
   result = array_merge(num_arrays, sizes, a);
   arrays_match(8, result, expected);
+  free(result);
 }
 
 TEST(ArrayMerge, Handle_multiple_copies_of_longer_list) {
@@ -54,6 +57,7 @@ TEST(ArrayMerge, Handle_multiple_copies_of_longer_list) {
 
   result = array_merge(num_arrays, sizes, a);
   arrays_match(8, result, expected);
+free(result);
 }
 
 TEST(ArrayMerge, Handle_multiple_copies_of_longer_list_different_orders) {
@@ -63,11 +67,12 @@ TEST(ArrayMerge, Handle_multiple_copies_of_longer_list_different_orders) {
   int a1[] = { 5, 8, 9, 3, 2, 0, 6, 378293, 2, 0 };
   int a2[] = { 8, -52857, 0, 2, 3, 0, 2, 3, 6, 9 };
   int* a[] = { a0, a1, a2, a0, a1, a2, a0, a1, a2 };
-  int expected[] = { 7, -52857, -22345, 0, 2, 3, 5, 6, 8, 9, 378293 };
+  int expected[] = { 10, -52857, -22345, 0, 2, 3, 5, 6, 8, 9, 378293 };
   int* result;
 
   result = array_merge(num_arrays, sizes, a);
-  arrays_match(8, result, expected);
+  arrays_match(11, result, expected);
+free(result);
 }
 
 TEST(ArrayMerge, Handle_different_sizes) {
@@ -76,7 +81,7 @@ TEST(ArrayMerge, Handle_different_sizes) {
   int* a[num_arrays];
   int expected[] = { 10, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
   int* result;
-  int i, j;
+  int i, j, x;
 
   for (i=0; i<num_arrays; ++i) {
     sizes[i] = i;
@@ -88,6 +93,10 @@ TEST(ArrayMerge, Handle_different_sizes) {
 
   result = array_merge(num_arrays, sizes, a);
   arrays_match(11, result, expected);
+   for (x=0; x<num_arrays; ++x) {
+    free(a[x]);
+   }
+ free(result);
 }
 
 TEST(ArrayMerge, Handle_different_sizes_reversed) {
@@ -96,7 +105,7 @@ TEST(ArrayMerge, Handle_different_sizes_reversed) {
   int* a[num_arrays];
   int expected[] = { 10, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
   int* result;
-  int i, j;
+  int i, j, x;
 
   for (i=num_arrays-1; i>=0; --i) {
     sizes[i] = i;
@@ -108,6 +117,10 @@ TEST(ArrayMerge, Handle_different_sizes_reversed) {
 
   result = array_merge(num_arrays, sizes, a);
   arrays_match(11, result, expected);
+ for (x=0; x<num_arrays; ++x) {
+    free(a[x]);
+   }
+ free(result);
 }
 
 int main(int argc, char* argv[]) {
