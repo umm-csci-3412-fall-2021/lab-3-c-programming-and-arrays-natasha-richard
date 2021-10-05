@@ -14,6 +14,20 @@ for(i =1; i<x; i++){
 }
 	return count;
 }
+int* removeDuplicate(int a[], int size){
+int i, j, k;
+for(i=0; i<size; i++){
+	for(j=i+1; j<size; j++){
+		if(a[i] == a[j]){
+			for(k=j; k<(size-1); k++){
+			a[k] = a[k+1];}
+		size--;
+		j--;
+		}
+	}
+}
+return a;
+}
 int* array_merge(int num_arrays, int* sizes, int** values) {
  
        	if(num_arrays == 0) {
@@ -41,17 +55,10 @@ int n, j;
 int distinctNums = countDistinct(bigArray, totalSize);
 int* output = (int*) malloc((distinctNums + 1)*sizeof(int));
 output[0] = distinctNums;
-int outputPosition = 1;
-int m;
-for(m=0; m<totalSize-1; m++){
-	if(bigArray[m] != bigArray[m+1]){
-	output[outputPosition] = bigArray[m];
-	outputPosition++;
-	if(m==totalSize-2) {
-	output[outputPosition] = bigArray[totalSize-1];}
-	}
-}
-
+removeDuplicate(bigArray, totalSize);
+int x;
+for(x=0; x<distinctNums; x++){
+output[x+1] = bigArray[x];}
 free(bigArray);
   return output;
   }
